@@ -4,9 +4,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import React, {
-	ChangeEvent,
 	createContext,
 	useContext,
+	useEffect,
 	useRef,
 	useState,
 } from "react";
@@ -64,6 +64,7 @@ const Dropzone = React.forwardRef<HTMLDivElement, DropzoneProps>(
 					ref={ref}
 					className={cn(
 						"border border-dashed rounded-md bg-background hover:cursor-pointer hover:border-muted-foreground/50 flex items-center justify-center",
+						"has-[input:disabled]:bg-muted-foreground/10 has-[input:disabled]:text-muted-foreground has-[input:disabled]:pointer-events-none",
 						dragging && "border-muted-foreground/50",
 						className,
 					)}
@@ -101,15 +102,21 @@ interface DropzoneInputProps
 
 const DropzoneInput = ({ className, ...props }: DropzoneInputProps) => {
 	const { inputRef, handleOnDrop } = useDropzoneContext();
+	const [ref, setRef] =
+		useState<React.MutableRefObject<HTMLInputElement | null>>();
+
+	useEffect(() => {
+		setRef(inputRef);
+	}, [inputRef]);
 
 	return (
 		<Input
 			{...props}
 			value={undefined}
-			ref={inputRef}
+			ref={ref}
 			type="file"
-			className={cn("hidden", className)}
-			onChange={(e: ChangeEvent<HTMLInputElement>) =>
+			className={cn("hidden peer/input", className)}
+			onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 				handleOnDrop(e.target.files)
 			}
 		/>
