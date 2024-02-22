@@ -1,5 +1,6 @@
 import { Compressor } from "@/components/compressor";
-import { GithubLink } from "@/components/github-link";
+import { GithubProfile } from "@/components/github/profile";
+import { GithubRepository } from "@/components/github/repository";
 import {
 	Card,
 	CardContent,
@@ -13,9 +14,11 @@ export default function Home() {
 		<main className="w-full h-screen py-24 md:px-24">
 			<Card className="w-full mx-auto max-w-[25.25rem]">
 				<CardHeader>
-					<CardTitle>WebP Compressor</CardTitle>
+					<CardTitle className="flex items-center justify-between">
+						WebP Compressor <GithubRepository />
+					</CardTitle>
 					<CardDescription>
-						Opinionated WebP Compressor created by <GithubLink />.
+						Opinionated WebP Compressor created by <GithubProfile />.
 					</CardDescription>
 				</CardHeader>
 				<CardContent>

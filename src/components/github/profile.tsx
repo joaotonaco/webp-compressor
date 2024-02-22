@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export function GithubLink() {
+export function GithubProfile() {
 	return (
 		<Link
 			href="https://github.com/joaotonaco"
