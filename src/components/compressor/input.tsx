@@ -27,7 +27,12 @@ export function CompressorInput() {
 					<FormControl>
 						<Dropzone className="h-20" handleOnDrop={field.onChange}>
 							<DropzoneMessage>Select or drop files here</DropzoneMessage>
-							<DropzoneInput {...field} disabled={isSubmitting} multiple />
+							<DropzoneInput
+								{...field}
+								accept="image/*"
+								disabled={isSubmitting}
+								multiple
+							/>
 						</Dropzone>
 					</FormControl>
 					<FormMessage />
