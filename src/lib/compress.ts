@@ -5,15 +5,15 @@ import sharp from "sharp";
 
 export async function compressImage(formData: FormData) {
 	const file = formData.get("file") as File;
-	const buffer = await file.arrayBuffer();
-	const image = await sharp(buffer)
-		.png({ compressionLevel: 8 })
-		.jpeg({ quality: 80 })
-		.webp({ quality: 80 })
-		.toFormat("webp")
-		.toBuffer();
+	const fileBuffer = await file.arrayBuffer();
 
-	return image.toJSON();
+	const image = sharp(fileBuffer).toFormat("webp", { compression: "webp" });
+	const buffer = await image.toBuffer();
+
+	const fileName = file.name.replace(/\.[^/.]+$/, ".webp");
+	const { data } = buffer.toJSON();
+
+	return { fileName, data };
 }
 
 export async function bulkCompressImages(formData: FormData) {
@@ -28,9 +28,9 @@ export async function bulkCompressImages(formData: FormData) {
 		}),
 	);
 
-	compressedFiles.forEach((buffer, index) => {
-		zip.file(files[index].name, Buffer.from(buffer.data));
-	});
+	for (const compressedFile of compressedFiles) {
+		zip.file(compressedFile.fileName, Buffer.from(compressedFile.data));
+	}
 
 	return zip.generateAsync({ type: "base64" });
 }
